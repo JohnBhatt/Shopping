@@ -1,0 +1,40 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Delete Category";
+}
+<div class="card shadow border-0 my-4">
+
+<div class="card-header bg-secondary bg-gradient m-lg-0 py-0">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="text-white py-2">Delete Category</h2>
+        </div>
+    </div>
+</div>
+<div class="card-body p-4">
+    <form method="post" class="row">
+        <input asp-for="ID" hidden />
+        <div class="border p-3">
+            <div asp-validation-summary="All"></div>
+            <div class="form-floating py-2 col-12">
+                <label class="p-0" asp-for="Name"></label>
+                <input asp-for="Name" readonly class="form-control border-0 shadow" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <label class="p-0" asp-for="DisplayOrder"></label>
+                <input asp-for="DisplayOrder" readonly class="form-control border-0 shadow" />
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-danger form-control">Delete</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary border form-control">All Categories</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
