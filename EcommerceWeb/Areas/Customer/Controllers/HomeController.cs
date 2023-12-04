@@ -29,6 +29,15 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             return View(product);
         }
 
+        public IActionResult CategoryWise(int id)
+        {
+            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
+            //IEnumerable<Product> productList = _unitOfWork.Product.GetAll(u => u.CategoryID == id,includeProperties: "Category").ToList();
+            //Product product = _unitOfWork.Product.Get(u=>u.CategoryID ==id, includeProperties: "Category");
+            return View(productList);
+        }
+
         public IActionResult Privacy()
         {
             return View();

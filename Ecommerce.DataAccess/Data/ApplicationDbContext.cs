@@ -14,7 +14,9 @@ namespace Eccomerce.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products{ get; set; }
-
+        public DbSet<Company> Companies { get; set; }
+        //Mapper for ApplicationUser class created to extend default IdentityUser
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -24,6 +26,8 @@ namespace Eccomerce.DataAccess.Data
                 new Category { ID = 2, Name = "Adventure", DisplayOrder = 2 },
                 new Category { ID = 3, Name = "Sci-Fi", DisplayOrder = 3 }
                 );
+
+
             modelBuilder.Entity<Product>().HasData(
                 new Product
                 {

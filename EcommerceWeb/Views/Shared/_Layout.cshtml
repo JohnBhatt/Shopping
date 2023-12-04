@@ -26,23 +26,26 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                       
+
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Admin
-                            </a>
-                            <ul class="dropdown-menu text-dark">
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a></li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu text-dark">
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="bi bi-diagram-2"></i>Product</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="bi bi-collection"></i>Category</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index"><i class="bi bi-building-fill-gear"></i> Company</a></li>
 
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
-                   <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
@@ -65,7 +68,7 @@
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.tiny.cloud/1/88cg281824b81v6bvft6l1vv1iccwhunutz2zj5g2mr0a4q6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>    
+    <script src="https://cdn.tiny.cloud/1/88cg281824b81v6bvft6l1vv1iccwhunutz2zj5g2mr0a4q6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

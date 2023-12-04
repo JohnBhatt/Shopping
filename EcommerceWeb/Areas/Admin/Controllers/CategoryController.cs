@@ -1,11 +1,18 @@
 ﻿using Eccomerce.DataAccess.Data;
 using Ecommerce.DataAccess.Repository.IRepository;
 using Ecommerce.Models;
+using Ecommerce.Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+
+    //To Authorize the entire page for selected roles only, we are using Authorize Tag before controller definition, if we need to control particular action like Create/Delete, we can write this tag just before their definition. 
+
+    [Authorize(Roles =SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitofWork;
@@ -72,38 +79,63 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Delete(int? ID)
-        {
-            if (ID == null || ID.Value == 0)
-            {
-                //Custom Error Page
-                return NotFound();
-            }
-            //Find only wroks with Primary Key
-            Category? catFromdb = _unitofWork.Category.Get(u => u.ID == ID);
-            //Alternative way of getting CategoryID from database
-            //Category? catFromdb1 = _db.Categories.FirstOrDefault(u=>u.CategoryID==id); 
-            //Category? catFromdb2 = _db.Categories.Where(u=>u.CategoryID==id).FirstOrDefault();
+        //public IActionResult Delete(int? ID)
+        //{
+        //    if (ID == null || ID.Value == 0)
+        //    {
+        //        //Custom Error Page
+        //        return NotFound();
+        //    }
+        //    //Find only wroks with Primary Key
+        //    Category? catFromdb = _unitofWork.Category.Get(u => u.ID == ID);
+        //    //Alternative way of getting CategoryID from database
+        //    //Category? catFromdb1 = _db.Categories.FirstOrDefault(u=>u.CategoryID==id); 
+        //    //Category? catFromdb2 = _db.Categories.Where(u=>u.CategoryID==id).FirstOrDefault();
 
-            if (catFromdb == null)
-            {
-                return NotFound();
-            }
-            return View(catFromdb);
+        //    if (catFromdb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(catFromdb);
+        //}
+
+        //[HttpPost, ActionName("Delete")]
+        //public IActionResult DeletePOST(int? ID)
+        //{
+        //    Category? catFromdb = _unitofWork.Category.Get(u => u.ID == ID);
+        //    if (catFromdb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _unitofWork.Category.Remove(catFromdb);
+        //    _unitofWork.Save();
+        //    TempData["success"] = "Category deleted successfully!";
+        //    return RedirectToAction("Index", "Category");
+        //}
+
+        #region API Calls
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Category> objProductList = _unitofWork.Category.GetAll().ToList();
+            return Json(new { data = objProductList });
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? ID)
+        [HttpDelete]
+        public IActionResult Delete(int? id)
         {
-            Category? catFromdb = _unitofWork.Category.Get(u => u.ID == ID);
-            if (catFromdb == null)
+            var categoryToDelete = _unitofWork.Category.Get(u => u.ID == id);
+            if (categoryToDelete == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            _unitofWork.Category.Remove(catFromdb);
+           
+            _unitofWork.Category.Remove(categoryToDelete);
             _unitofWork.Save();
-            TempData["success"] = "Category deleted successfully!";
-            return RedirectToAction("Index", "Category");
+
+            List<Category> objProductList = _unitofWork.Category.GetAll().ToList();
+            return Json(new { success = true, message = "Delete Successfull." });
         }
+        #endregion
     }
 }

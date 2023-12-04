@@ -2,6 +2,8 @@
 using Ecommerce.DataAccess.Repository.IRepository;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
+using Ecommerce.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -9,6 +11,10 @@ using System.Collections.Generic;
 namespace EcommerceWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+
+    //Area protected for Admin Role users.
+    [Authorize(Roles = SD.Role_Admin)]
+
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitofWork;
