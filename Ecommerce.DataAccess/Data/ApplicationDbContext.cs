@@ -13,8 +13,11 @@ namespace Eccomerce.DataAccess.Data
         }
 
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products{ get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Company> Companies { get; set; }
+
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
         //Mapper for ApplicationUser class created to extend default IdentityUser
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,7 +44,7 @@ namespace Eccomerce.DataAccess.Data
                     Price50 = 85,
                     Price100 = 80,
                     CategoryID = 3,
-                    ImageURL=""
+                    ImageURL = ""
                 },
                 new Product
                 {
@@ -54,7 +57,7 @@ namespace Eccomerce.DataAccess.Data
                     Price = 30,
                     Price50 = 25,
                     Price100 = 20,
-                    CategoryID=2,
+                    CategoryID = 2,
                     ImageURL = ""
                 },
                 new Product
