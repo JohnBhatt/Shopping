@@ -32,22 +32,23 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQty(cart);
-                ShoppingCartVM.OrderTotal += (cart.Price + cart.Count);
+                ShoppingCartVM.OrderTotal += (cart.Price * cart.Count);
             }
 
             return View(ShoppingCartVM);
         }
 
-        public IActionResult Increase(int cartID)
+        public IActionResult Plus(int cartID)
         {
             
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id== cartID);
             cartFromDb.Count += 1;
             _unitOfWork.ShoppingCart.Update(cartFromDb);
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Decrease(int cartID)
+        public IActionResult Minus(int cartID)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartID);
             if (cartFromDb.Count <= 1)
@@ -57,15 +58,23 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             else
                 cartFromDb.Count -= 1;
             _unitOfWork.ShoppingCart.Update(cartFromDb);
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete(int cartID)
+        public IActionResult Remove(int cartID)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartID);
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
 
         private double GetPriceBasedOnQty(ShoppingCart shoppingCart)
         {
