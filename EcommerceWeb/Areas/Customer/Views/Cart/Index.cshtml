@@ -29,7 +29,7 @@
                         <div class="row border-bottom pb-3">
                             <div class="d-none d-lg-block col-lg-1 text-center py-2">
                                 <img src="@(item.Product.ImageURL!=null? item.Product.ImageURL:"https://placehold.co/500x600") " width="100%" class="rounded" />
-                           
+
                             </div>
                             <div class="col-12 col-lg-6 pt-md-3">
                                 <h5 class="text-uppercase text-secondary"><strong><a asp-action="Details" asp-controller="Home" asp-route-ID="@item.ProductId">@item.Product.Title</a></strong></h5>
@@ -73,7 +73,7 @@
                         <ul class="list-group mb-4">
                             <li class="d-flex justify-content-between align-items-center">
                                 <h5 class="text-dark fw-semibold text-uppercase"> Total (USD)</h5>
-                                <h4 class="text-dark fw-bolder"> @Model.OrderTotal.ToString("c")</h4>
+                                <h4 class="text-dark fw-bolder"> @Model.OrderHeader.OrderTotal.ToString("c")</h4>
                             </li>
                         </ul>
                     </div>

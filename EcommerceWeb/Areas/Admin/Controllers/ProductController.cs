@@ -62,7 +62,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 productVM.Product = _unitofWork.Product.Get(u => u.ID == id);
                 return View(productVM);
             }
-
+            
 
         }
 

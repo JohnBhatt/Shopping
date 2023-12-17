@@ -30,6 +30,11 @@
                         <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phone" aria-required="true" placeholder="Phone No" />
+                        <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">Phone No</label>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
 
 
                     <div class="form-floating mb-3 col-md-6">
@@ -69,12 +74,7 @@
                         <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                     </div>
 
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phone" aria-required="true" placeholder="Phone No" />
-                        <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">Phone No</label>
-                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3 col-md-6">
+                     <div class="form-floating mb-3 col-md-6">
                         <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
                             <option selected disabled>--Select Role--</option>
                         </select>
