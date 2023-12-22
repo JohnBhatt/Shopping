@@ -1,5 +1,6 @@
 using Ecommerce.DataAccess.Repository.IRepository;
 using Ecommerce.Models;
+using Ecommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -19,6 +20,15 @@ namespace EcommerceWeb.Areas.Customer.Controllers
         }
         public IActionResult Index()
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
+
+            }
+
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return View(productList);
         }
@@ -45,24 +55,27 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             {
                 cartFromDb.Count += cart.Count;
                 //Even the below line is commented, the update command will work. That's because EntityFramework is tracking the object created on Line 44 and it knows we have added/updated values of Count, so at the time of _UnitOfWork.Save() command, the cartFromDb will be updated.
-
                 //If we do not want this object to be tracked, we need to disable tracking in Repository. That will be IRepository file and we need to add bool tracked = false at the end of get command. 
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userID).Count());
+
             }
             else
             {
                 _unitOfWork.ShoppingCart.Add(cart);
+                _unitOfWork.Save();
+
+                //Putting Object Value in Session.
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userID).Count());
             }
             TempData["Success"] = "Cart Updated Successfully";
-
-            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult CategoryWise(int id)
         {
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-
             //IEnumerable<Product> productList = _unitOfWork.Product.GetAll(u => u.CategoryID == id,includeProperties: "Category").ToList();
             //Product product = _unitOfWork.Product.Get(u=>u.CategoryID ==id, includeProperties: "Category");
             return View(productList);

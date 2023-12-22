@@ -26,10 +26,17 @@ namespace EcommerceWeb.Areas.Customer.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public IActionResult Index()
+
+        string ReturnUserClaim()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userID = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return claim;
+        }
+        public IActionResult Index()
+        {
+           
+            var userID = ReturnUserClaim();
             ShoppingCartVM = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userID, includeProperties: "Product"),
@@ -198,6 +205,8 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             cartFromDb.Count += 1;
             _unitOfWork.ShoppingCart.Update(cartFromDb);
             _unitOfWork.Save();
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == ReturnUserClaim() ).Count());
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -209,9 +218,12 @@ namespace EcommerceWeb.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
-                cartFromDb.Count -= 1;
+            {   cartFromDb.Count -= 1;
             _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
             _unitOfWork.Save();
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == ReturnUserClaim()).Count());
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -220,6 +232,8 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartID);
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
             _unitOfWork.Save();
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == ReturnUserClaim()).Count());
+
             return RedirectToAction(nameof(Index));
         }
 

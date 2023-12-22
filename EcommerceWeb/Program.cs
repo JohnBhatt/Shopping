@@ -36,6 +36,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+//To use Sessions in Application. This is required to display Cart count in header navbar.
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 //This is required when we are using Razor Pages along with MVC Pages. (Identity services provided by .NET Core as using Razor Pages.
 builder.Services.AddRazorPages();
@@ -62,6 +70,8 @@ StripeConfiguration.ApiKey=builder.Configuration.GetSection("Stripe:SecretKey").
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+//Using session
+app.UseSession();
 //This will fix Page View Not found for Razor Pages. Ex. Identity related pages. 
 app.MapRazorPages();
 app.MapControllerRoute(

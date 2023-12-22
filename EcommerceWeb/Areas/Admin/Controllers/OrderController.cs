@@ -127,7 +127,6 @@ namespace EcommerceWeb.Areas.Admin.Controllers
         {
             OrderVM.OrderHeader = _unitofWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "ApplicationUser");
             OrderVM.OrderDetail = _unitofWork.OrderDetail.GetAll(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "Product");
-            return RedirectToAction(nameof(Details), new { orderid = OrderVM.OrderHeader.Id });
 
 
             var domain = "https://localhost:7050/";
@@ -164,7 +163,29 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             _unitofWork.Save();
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
+
         }
+
+        public IActionResult PaymentConfirmation(int orderHeaderId)
+        {
+            OrderHeader orderHeader = _unitofWork.OrderHeader.Get(u => u.Id == orderHeaderId, includeProperties: "ApplicationUser");
+            if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
+            {
+                //This si an Order by Individual Customer
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.SessionId);
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitofWork.OrderHeader.UpdateStripePaymentID(OrderVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+                    _unitofWork.OrderHeader.UpdateStatus(orderHeaderId, orderHeader.OrderStatus, SD.PaymentStatusApproved);
+                    _unitofWork.Save();
+                }
+            }
+           
+            return View(orderHeader);
+        }
+
+
         #region API Calls
         [HttpGet]
         public IActionResult GetAll(string status)
