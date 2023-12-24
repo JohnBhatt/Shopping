@@ -214,7 +214,15 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        //If user is created from Admin portal, user should not be logged-in automaticaally.
+                        if (User.IsInRole(SD.Role_Admin))
+                        {
+                            TempData["Success"] = "New user created successfully!";
+                        }
+                        else
+                        { 
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }

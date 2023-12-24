@@ -26,6 +26,8 @@ namespace EcommerceWeb.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+            //If not using ViewComponent, it would be place to clear cookie. 
+            //HttpContext.Session.Clear();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {

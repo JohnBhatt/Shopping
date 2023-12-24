@@ -181,7 +181,7 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
             if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
             {
-                //This si an Order by Individual Customer
+                //This is an Order by Individual Customer
                 var service = new SessionService();
                 Session session = service.Get(orderHeader.SessionId);
                 if (session.PaymentStatus.ToLower() == "paid")
@@ -190,6 +190,7 @@ namespace EcommerceWeb.Areas.Customer.Controllers
                     _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
+                HttpContext.Session.Remove(SD.SessionCart);
             }
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserID).ToList();
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);

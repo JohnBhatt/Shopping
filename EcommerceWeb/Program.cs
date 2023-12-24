@@ -36,6 +36,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+//To Add facebook login.
+
+builder.Services.AddAuthentication().AddFacebook(options => {
+    options.AppId = "737448484947247";
+    options.AppSecret = "0d1ac2f89c0ad9cf4ba230ea39bb0d06";
+});
+
+
 //To use Sessions in Application. This is required to display Cart count in header navbar.
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
