@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Ecommerce.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
+using Ecommerce.DataAccess.DbInitializer;
+using Ecommerce.DataAccess.DbInitilizer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,9 @@ builder.Services.AddAuthentication().AddFacebook(options => {
     options.AppId = "737448484947247";
     options.AppSecret = "0d1ac2f89c0ad9cf4ba230ea39bb0d06";
 });
+
+//DbInitializer 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 
 //To use Sessions in Application. This is required to display Cart count in header navbar.
@@ -80,6 +85,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 //Using session
 app.UseSession();
+
+//For the activites to be done first time. 
+SeedDatabase();
+
 //This will fix Page View Not found for Razor Pages. Ex. Identity related pages. 
 app.MapRazorPages();
 app.MapControllerRoute(
@@ -87,3 +96,12 @@ app.MapControllerRoute(
     // pattern: "{controller=Home}/{action=Index}/{id?}");
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 app.Run();
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope()) {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
