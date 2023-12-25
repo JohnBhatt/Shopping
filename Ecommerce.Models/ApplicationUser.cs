@@ -24,6 +24,8 @@ namespace Ecommerce.Models
         public int? CompanyID { get; set; }
         [ForeignKey ("CompanyID")]
         [ValidateNever]
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
+        [NotMapped]
+        public string Role { get; set; }
     }
 }

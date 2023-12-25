@@ -128,8 +128,9 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             OrderVM.OrderHeader = _unitofWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "ApplicationUser");
             OrderVM.OrderDetail = _unitofWork.OrderDetail.GetAll(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
-
-            var domain = "https://localhost:7050/";
+            //To get domain name dynamically. 
+            //var domain = "https://localhost:7050/";
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
             var options = new Stripe.Checkout.SessionCreateOptions
             {
 

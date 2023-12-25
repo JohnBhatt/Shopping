@@ -137,7 +137,11 @@ namespace EcommerceWeb.Areas.Customer.Controllers
             }
             if (appUser.CompanyID.GetValueOrDefault() == 0)
             {
-                var domain = "https://localhost:7050/";
+
+                //To get domain name dynamically. 
+                //var domain = "https://localhost:7050/";
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+
                 var options = new Stripe.Checkout.SessionCreateOptions
                 {
 
