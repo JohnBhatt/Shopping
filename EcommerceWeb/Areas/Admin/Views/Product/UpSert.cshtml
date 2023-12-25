@@ -17,7 +17,7 @@
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for="Product.ID" hidden />
             @* Added New hidden Field because it was sending null on Update. *@
-            <input asp-for="Product.ImageURL" hidden />
+            <input asp-for="Product.ID" hidden />
 
             <div class="row">
                 <div class="col-10">
@@ -74,10 +74,10 @@
                         </div>
                         <div class="form-floating py-2 col-12">
                             <label class="p-0"></label>
-                            <input type="file" name="file" asp-for="Product.ImageURL" class="form-file border-0 shadow" />
+                            @* <input type="file" name="file" asp-for="Product.ImageURL" class="form-file border-0 shadow" />
                             @* If File is showing as Null in UnitOfWork, that's due to file's name not being specified. We need to give same file name as defined in Controller *@
-                            <span asp-validation-for="Product.ImageURL" class="text-danger"></span>
-                        </div>
+                          @*  <span asp-validation-for="Product.ImageURL" class="text-danger"></span>
+                        *@ </div>
 
 
                         <div class="row pb-5 pt-4">
@@ -98,8 +98,8 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <img src="@Model.Product.ImageURL" width="100%" style="border-radius:5px;border:1px solid #bbb9b9" />
-                </div>
+@*                     <img src="@Model.Product.ImageURL" width="100%" style="border-radius:5px;border:1px solid #bbb9b9" />
+ *@                </div>
             </div>
 
         </form>

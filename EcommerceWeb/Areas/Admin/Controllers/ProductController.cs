@@ -83,22 +83,22 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
 
                     //On Update Command, if there is already file present.
-                    if (!string.IsNullOrEmpty(obj.Product.ImageURL))
-                    {
-                        //Get the URL and Path of old file, Delete the Old file. We have to remove the backslash at start of image, hence TrimStart method.
-                        var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageURL.TrimStart('\\'));
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
+                    //if (!string.IsNullOrEmpty(obj.Product.ImageURL))
+                    //{
+                    //    //Get the URL and Path of old file, Delete the Old file. We have to remove the backslash at start of image, hence TrimStart method.
+                    //    var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageURL.TrimStart('\\'));
+                    //    if (System.IO.File.Exists(oldImagePath))
+                    //    {
+                    //        System.IO.File.Delete(oldImagePath);
+                    //    }
+                    //}
 
                     using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
 
                     }
-                    obj.Product.ImageURL = @"\images\product\" + fileName;
+                    //obj.Product.ImageURL = @"\images\product\" + fileName;
                 }
 
                 if (obj.Product.ID == 0)
@@ -206,11 +206,11 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             {
                 return Json(new {success=false, message= "Error while deleting"});
             }
-            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageURL.TrimStart('\\'));
-            if (System.IO.File.Exists(oldImagePath))
-            {
-                System.IO.File.Delete(oldImagePath);
-            }
+            //var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageURL.TrimStart('\\'));
+            //if (System.IO.File.Exists(oldImagePath))
+            //{
+            //    System.IO.File.Delete(oldImagePath);
+            //}
             _unitofWork.Product.Remove(productToDelete);
             _unitofWork.Save();
 

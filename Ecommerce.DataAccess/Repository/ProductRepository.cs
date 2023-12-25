@@ -32,9 +32,9 @@ namespace Ecommerce.DataAccess.Repository
                 objFromDB.CategoryID= obj.CategoryID;
                 objFromDB.Price50= obj.Price50;
                 objFromDB.Price100= obj.Price100;
-                if (obj.ImageURL != null) { 
-                objFromDB.ImageURL = obj.ImageURL;
-                }
+                //if (obj.ImageURL != null) { 
+                //objFromDB.ImageURL = obj.ImageURL;
+                //}
             }
         }
     }
