@@ -1,0 +1,41 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<h1></h1>
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-4">
+        <div class="row">
+            <h2 class="py-2 text-white text-center">Manage your account</h2>
+
+        </div>
+    </div>
+    <div class="card-body p-4 pb-4">
+        <div class="row pt-3">
+            <div class="col-md-12">
+
+                <h3>Change your account settings</h3>
+                <hr />
+                <div class="row">
+                    <div class="col-md-3">
+                        <partial name="_ManageNav" />
+                    </div>
+                    <div class="col-md-9">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
