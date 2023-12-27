@@ -40,10 +40,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 //To Add facebook login.
 
-builder.Services.AddAuthentication().AddFacebook(options => {
-    options.AppId = "737448484947247";
-    options.AppSecret = "0d1ac2f89c0ad9cf4ba230ea39bb0d06";
-});
+//builder.Services.AddAuthentication().AddFacebook(options => {
+//    options.AppId = "xxxx";
+//    options.AppSecret = "xxxx";
+//});
 
 //DbInitializer 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();

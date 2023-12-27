@@ -21,14 +21,14 @@ namespace EcommerceWeb.Areas.Customer.Controllers
         public IActionResult Index()
         {
           
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages").ToList();
             return View(productList);
         }
         public IActionResult Details(int id)
         {
             ShoppingCart cart = new()
             {
-                Product = _unitOfWork.Product.Get(u => u.ID == id, includeProperties: "Category"),
+                Product = _unitOfWork.Product.Get(u => u.ID == id, includeProperties: "Category,ProductImages"),
                 Count = 1,
                 ProductId = id
             };

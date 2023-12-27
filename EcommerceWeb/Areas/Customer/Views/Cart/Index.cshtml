@@ -28,8 +28,14 @@
                     {
                         <div class="row border-bottom pb-3">
                             <div class="d-none d-lg-block col-lg-1 text-center py-2">
-@*                                 <img src="@(item.Product.ImageURL!=null? item.Product.ImageURL:"https://placehold.co/500x600") " width="100%" class="rounded" />
- *@
+                                @if (item.Product.ProductImages != null && item.Product.ProductImages.Count() > 0)
+                                {
+                                    <img src="@item.Product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded w-100" />
+                                }
+                                else
+                                {
+                                    <img src="https://placehold.co/500x600/png" class="card-img-top rounted w-100" />
+                                }
                             </div>
                             <div class="col-12 col-lg-6 pt-md-3">
                                 <h5 class="text-uppercase text-secondary"><strong><a asp-action="Details" asp-controller="Home" asp-route-ID="@item.ProductId">@item.Product.Title</a></strong></h5>

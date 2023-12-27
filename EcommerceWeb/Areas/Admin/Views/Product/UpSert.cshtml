@@ -74,10 +74,10 @@
                         </div>
                         <div class="form-floating py-2 col-12">
                             <label class="p-0"></label>
-                            @* <input type="file" name="file" asp-for="Product.ImageURL" class="form-file border-0 shadow" />
+                            <input type="file" name="files" asp-for="Product.ProductImages" multiple class="form-file border-0 shadow" />
                             @* If File is showing as Null in UnitOfWork, that's due to file's name not being specified. We need to give same file name as defined in Controller *@
-                          @*  <span asp-validation-for="Product.ImageURL" class="text-danger"></span>
-                        *@ </div>
+                          @*  <span asp-validation-for="Product.ImageURL" class="text-danger"></span>*@
+                        </div>
 
 
                         <div class="row pb-5 pt-4">
@@ -98,7 +98,20 @@
                     </div>
                 </div>
                 <div class="col-2">
-@*                     <img src="@Model.Product.ImageURL" width="100%" style="border-radius:5px;border:1px solid #bbb9b9" />
+                    @if (Model.Product.ProductImages != null)
+                    {
+
+                        foreach (var image in Model.Product.ProductImages)
+                        {
+                        <div class="border p-1 m-2 text-center">
+                                <img src="@image.ImageUrl" width="100%" style="border-radius:5px;border:1px solid #bbb9b9" />
+                                <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageID="@image.Id"><i class="bi bi-trash-fill"></i>Delete</a>
+                            </div>                            
+                        }
+                    }
+
+@*                     
+    <img src="@Model.Product.ImageURL" width="100%" style="border-radius:5px;border:1px solid #bbb9b9" />
  *@                </div>
             </div>
 

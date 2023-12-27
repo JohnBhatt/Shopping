@@ -9,16 +9,17 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.DataAccess.Repository
 {
-    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
+    public class ProductImageRepository : Repository<ProductImage>, IProductImageRepository
     {
         public ApplicationDbContext _db;
-        public ApplicationUserRepository(ApplicationDbContext db) : base(db)
+        public ProductImageRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
-        public void Update(ApplicationUser applicationUser)
-        { 
-        _db.ApplicationUsers.Update(applicationUser);
+        
+        public void Update(ProductImage obj)
+        {
+            _db.ProductImages.Update(obj);
         }
     }
 }
